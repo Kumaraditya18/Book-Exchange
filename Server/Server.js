@@ -26,7 +26,7 @@ app.use('/api', authRoutes);
 app.use('/api/books', bookRoutes);
 
 app.get('/', (req, res) => {
-  res.send('📚 Book Exchange API is running!');
+  res.send(' Book Exchange API is running!');
 });
 
 app.listen(PORT, () => {

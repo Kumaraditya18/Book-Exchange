@@ -17,7 +17,7 @@ const Dashboard = () => {
   }, []);
 
   const fetchBooks = async () => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/books`);
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/books`);
     const data = await res.json();
     setBooks(data);
     setFilteredBooks(data);
@@ -26,7 +26,7 @@ const Dashboard = () => {
   const handleAddBook = async (e) => {
     e.preventDefault();
     const book = { ...newBook, owner: user.name };
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/books`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/books`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(book),
