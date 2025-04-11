@@ -23,7 +23,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 space-y-4">
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-8 shadow-md rounded-xl space-y-4 w-96">
         <h2 className="text-xl font-bold text-center">Signup</h2>
         <input className="w-full border p-2" placeholder="Name" {...register('name')} />
@@ -36,6 +36,12 @@ const SignUp = () => {
         </select>
         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-full">Signup</button>
       </form>
+      <button
+        onClick={() => navigate(-1)}
+        className="text-green-600 hover:underline text-sm"
+      >
+        ← Go Back
+      </button>
     </div>
   );
 };
