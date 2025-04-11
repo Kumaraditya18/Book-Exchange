@@ -6,8 +6,9 @@ A full-stack Book Exchange Portal that enables users to list books for rent and 
 
 ## 🔗 Live Demo
 
-**Frontend (React + Tailwind)**: [https://your-frontend-url.vercel.app](https://your-frontend-url.vercel.app)  
-**Backend (Express + MongoDB)**: [https://your-backend-url.onrender.com](https://your-backend-url.onrender.com)
+Frontend: https://book-exchange-omega.vercel.app/
+
+Backend: https://book-exchange-j5b8.onrender.com/
 
 ---
 
