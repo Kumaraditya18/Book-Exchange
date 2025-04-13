@@ -10,6 +10,10 @@ const bookSchema = new mongoose.Schema({
     type: String,
     default: 'Available',
     enum: ['Available', 'Rented'],
+  },
+  coverImage: {
+    type: String,
+    default: '', // Optional: can set a default placeholder image URL here
   }
 });
 

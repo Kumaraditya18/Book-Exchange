@@ -5,7 +5,7 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
-  const [newBook, setNewBook] = useState({ title: '', author: '', location: '', contact: '' });
+  const [newBook, setNewBook] = useState({ title: '', author: '', location: '', contact: '', coverImage: '' });
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
@@ -33,7 +33,7 @@ const Dashboard = () => {
     });
     if (res.ok) {
       fetchBooks();
-      setNewBook({ title: '', author: '', location: '', contact: '' });
+      setNewBook({ title: '', author: '', location: '', contact: '', coverImage: '' });
     }
   };
 
@@ -65,7 +65,47 @@ const Dashboard = () => {
     );
   };
 
+  const renderBookCard = (book, i) => (
+    <div key={i} className="bg-white rounded-lg border shadow-sm hover:shadow-md transition overflow-hidden">
+      <img
+        src={book.coverImage || 'https://via.placeholder.com/300x200?text=No+Cover'}
+        alt={book.title}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-4 space-y-1 text-gray-700">
+        <p><span className="font-semibold">📘 Title:</span> {book.title}</p>
+        <p><span className="font-semibold">✍️ Author:</span> {book.author}</p>
+        <p><span className="font-semibold">👤 Owner:</span> {book.owner}</p>
+        <p><span className="font-semibold">📍 Location:</span> {book.location}</p>
+        <p><span className="font-semibold">📞 Contact:</span> {book.contact}</p>
+        <p><span className="font-semibold">📌 Status:</span> <span className={book.status === 'Available' ? 'text-green-600' : 'text-red-500'}>{book.status}</span></p>
+      </div>
+      <div className="p-4">
+        {user.role === 'seeker' && book.status === 'Available' && (
+          <button
+            onClick={() => toggleBookStatus(book._id)}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow w-full"
+          >
+            Rent
+          </button>
+        )}
+
+        {user.role === 'owner' && book.owner === user.name && book.status === 'Rented' && (
+          <button
+            onClick={() => toggleBookStatus(book._id)}
+            className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow w-full"
+          >
+            Mark as Returned
+          </button>
+        )}
+      </div>
+    </div>
+  );
+
   if (!user) return <p className="text-center text-lg mt-10">Loading...</p>;
+
+  const yourBooks = filteredBooks.filter(b => b.owner === user.name);
+  const availableBooks = filteredBooks.filter(b => b.status === 'Available' && b.owner !== user.name);
 
   return (
     <div className="min-h-screen bg-[#f3e9d8] p-6 space-y-6">
@@ -94,6 +134,7 @@ const Dashboard = () => {
             <input className="border p-3 rounded w-full" placeholder="Author" value={newBook.author} onChange={e => setNewBook({ ...newBook, author: e.target.value })} />
             <input className="border p-3 rounded w-full" placeholder="Location" value={newBook.location} onChange={e => setNewBook({ ...newBook, location: e.target.value })} />
             <input className="border p-3 rounded w-full" placeholder="Contact" value={newBook.contact} onChange={e => setNewBook({ ...newBook, contact: e.target.value })} />
+            <input className="border p-3 rounded w-full" placeholder="Cover Image URL" value={newBook.coverImage} onChange={e => setNewBook({ ...newBook, coverImage: e.target.value })} />
           </div>
           <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow">
             Add Book
@@ -101,54 +142,41 @@ const Dashboard = () => {
         </form>
       )}
 
-      {/* Book Listings */}
-      <div>
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-2 sm:space-y-0">
-          <h2 className="text-2xl font-semibold text-gray-800">📖 All Listings</h2>
-          <input
-            className="border rounded px-4 py-2 w-full sm:w-80"
-            type="text"
-            value={search}
-            onChange={handleSearch}
-            placeholder="Search by title, author or location"
-          />
-        </div>
+      {/* Search Bar */}
+      <div className="flex justify-end">
+        <input
+          className="border rounded px-4 py-2 w-full sm:w-80"
+          type="text"
+          value={search}
+          onChange={handleSearch}
+          placeholder="Search by title, author or location"
+        />
+      </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredBooks.map((book, i) => (
-            <div key={i} className="bg-white p-5 rounded-lg border shadow-sm hover:shadow-md transition">
-              <div className="space-y-1 text-gray-700">
-                <p><span className="font-semibold">📘 Title:</span> {book.title}</p>
-                <p><span className="font-semibold">✍️ Author:</span> {book.author}</p>
-                <p><span className="font-semibold">👤 Owner:</span> {book.owner}</p>
-                <p><span className="font-semibold">📍 Location:</span> {book.location}</p>
-                <p><span className="font-semibold">📞 Contact:</span> {book.contact}</p>
-                <p><span className="font-semibold">📌 Status:</span> <span className={book.status === 'Available' ? 'text-green-600' : 'text-red-500'}>{book.status}</span></p>
-              </div>
-
-              {/* Action Button */}
-              <div className="mt-3">
-                {user.role === 'seeker' && book.status === 'Available' && (
-                  <button
-                    onClick={() => toggleBookStatus(book._id)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
-                  >
-                    Rent
-                  </button>
-                )}
-
-                {user.role === 'owner' && book.owner === user.name && book.status === 'Rented' && (
-                  <button
-                    onClick={() => toggleBookStatus(book._id)}
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow"
-                  >
-                    Mark as Returned
-                  </button>
-                )}
-              </div>
+      {/* Your Books (for owners) */}
+      {user.role === 'owner' && (
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">📘 Your Books</h2>
+          {yourBooks.length > 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {yourBooks.map(renderBookCard)}
             </div>
-          ))}
+          ) : (
+            <p className="text-gray-600">You haven't added any books yet.</p>
+          )}
         </div>
+      )}
+
+      {/* Available Books */}
+      <div>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">📖 Available Books</h2>
+        {availableBooks.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {availableBooks.map(renderBookCard)}
+          </div>
+        ) : (
+          <p className="text-gray-600">No available books at the moment.</p>
+        )}
       </div>
     </div>
   );
