@@ -68,7 +68,7 @@ const Dashboard = () => {
   const renderBookCard = (book, i) => (
     <div key={i} className="bg-white rounded-lg border shadow-sm hover:shadow-md transition overflow-hidden">
       <img
-        src={book.coverImage || 'https://via.placeholder.com/300x200?text=No+Cover'}
+        src={book.coverImage || 'https://placehold.co/300x200?text=No+Cover'}
         alt={book.title}
         className="w-full h-48 object-cover"
       />
