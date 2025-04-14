@@ -147,14 +147,7 @@ npm run dev
 - Add book with owner info ✅
 - Search and filter books ✅
 - Book status toggle (rent/return) ✅
-
----
-
-## 🚧 What’s Not Working (Yet)
-
-- Password validation or registration error handling ❌
-- Email verification ❌
-- Book images / file uploads ❌
+- cover image with image url ✅
 
 ---
 
