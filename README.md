@@ -25,7 +25,6 @@ Backend: https://book-exchange-j5b8.onrender.com/
 - Express.js
 - MongoDB (Mongoose)
 - dotenv
-- bcrypt (for password hashing)
 - CORS
 
 ---
